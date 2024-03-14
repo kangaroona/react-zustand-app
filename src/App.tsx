@@ -1,17 +1,15 @@
-import { useState } from 'react'
-import './App.css'
-import { Button } from '@/components/Button/Button'
+import { useState } from "react";
+import "./App.css";
+import { Button } from "@/components/Button/Button";
 
 function App() {
-  const [count, setCount] = useState(5);
+  const [count, setCount] = useState<number>(5);
   return (
     <>
-      <Button vote={count}/>
+      <Button vote={count} flag={false} />
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={() => setCount(count + 1)}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
@@ -20,7 +18,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

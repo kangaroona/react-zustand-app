@@ -1,36 +1,41 @@
-import { useState,useEffect } from "react";
-import  {useStore } from "@/stores/votes";
+import { useState, useEffect, useCallback } from "react";
+import { useStore } from "@/stores/votes";
 /**
  * Button component
  *
  * @return {JSX.Element} The button component with vote count and increment/decrement buttons
  */
-export function Button({vote}:{vote:number}) {
-  const [state,setSt] = useState(vote);
-  console.log('vote:',vote);
-  const {votes,addVotes,subtractVotes} = useStore();
-  function subtractVotesFn(){
+interface IButonProps {
+  vote: number;
+  flag: boolean;
+}
+export function Button({ vote, flag }: IButonProps) {
+  const [state, setSt] = useState(vote);
+  const { votes, subtractVotes, insert } = useStore();
+  function subtractVotesFn() {
     subtractVotes();
-    setSt(state-1);
+    setSt(state - 1);
   }
-  function addVotesFn(){
-    addVotes();
-    setSt(state+1);
-  }
-  useEffect(()=>{
-    console.log('useeffect');
-    useStore.setState({votes:vote})
-  },[vote]);
-  return (
-      <div>
-        <span>state:{state}</span>
-        <br />
-        <span>store:{votes}</span>
+  const addVotesFn = useCallback(async () => {
+    await insert(vote);
+    setSt(state + 1);
+  }, [state, vote]);
 
-        <p>
-          <button onClick={() => subtractVotesFn()}>-</button>
-          <button onClick={() => addVotesFn()}>+</button>
-        </p>
-        </div>
+  useEffect(() => {
+    console.log("useeffect");
+    useStore.setState({ votes: vote });
+  }, [vote]);
+  return (
+    <div>
+      {flag}
+      <span>state:{state}</span>
+      <br />
+      <span>store:{votes}</span>
+
+      <p>
+        <button onClick={() => subtractVotesFn()}>-</button>
+        <button onClick={() => addVotesFn()}>+</button>
+      </p>
+    </div>
   );
 }
