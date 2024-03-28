@@ -1,15 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useLayoutEffect } from "react";
 import { useStore } from "@/stores/votes";
 /**
  * Button component
  *
  * @return {JSX.Element} The button component with vote count and increment/decrement buttons
  */
-interface IButonProps {
-  vote: number;
-  flag: boolean;
-}
-export function Button({ vote, flag }: IButonProps) {
+
+export function Button({ vote }: { vote: number }) {
   const [state, setSt] = useState(vote);
   const { votes, subtractVotes, insert } = useStore();
   function subtractVotesFn() {
@@ -21,19 +18,16 @@ export function Button({ vote, flag }: IButonProps) {
     setSt(state + 1);
   }, [state, vote]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log("useeffect");
     useStore.setState({ votes: vote });
-  }, [vote]);
+  }, []);
   return (
     <div>
-      {flag}
-      <span>state:{state}</span>
-      <br />
-      <span>store:{votes}</span>
-
+      <h2>Button component</h2>
       <p>
         <button onClick={() => subtractVotesFn()}>-</button>
+        <span>button store:{votes}</span>
         <button onClick={() => addVotesFn()}>+</button>
       </p>
     </div>
